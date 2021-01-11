@@ -1,0 +1,7 @@
+
+welcome: "Welcome to your own personal calculator! Enter your name:"
+valid_name: "Make sure to enter a valid name, please."
+first_number: "What's the first number?"
+second_number: "What is the second number?"
+first_pick: "The first number you've picked is #{number1}!"
+second_pick: "And second you've picked is - just kidding, I can't tell you this any more!"

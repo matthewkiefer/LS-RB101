@@ -5,35 +5,43 @@
 # perform the operation
 # output the result
 
+require "pry"
+require 'yaml'
+
+MESSAGES = YAML.load_file('calculator_messages.yml')
+
 def prompt(message)
   puts("=> #{message}")
 end
 
 def valid_number?(num)
-  num.to_i() != 0
+  num.to_i.to_s == num || num.to_f.to_s == num
+#  num.to_i() != 0
 end
 
 def operation_to_message(op)
-  case op
-  when "1"
-    "Adding"
-  when "2"
-    "Subtracting"
-  when "3"
-    "Multiplying"
-  when "4"
-    "Dividing"
-  end
+  word = case op
+    when "1"
+      "Adding"
+    when "2"
+      "Subtracting"
+    when "3"
+      "Multiplying"
+    when "4"
+      "Dividing"
+    end
+
+  word
 end
 
-prompt "Welcome to your own personal calculator! Enter your name:"
+prompt MESSAGES["welcome"]
 
 name = ""
 loop do
   name = gets.chomp
 
   if name.empty?
-    prompt "Valid name, please"
+    prompt MESSAGES["valid_name"]
   else break
   end
 end
@@ -44,7 +52,7 @@ loop do # main loop
   number1 = ""
   number2 = ""
   loop do
-    prompt "What's the first number? "
+    prompt MESSAGES["first_number"]
     number1 = gets.chomp
 
     if valid_number?(number1)
@@ -53,10 +61,10 @@ loop do # main loop
       prompt("Hm, invalid; try again?")
     end
   end
-  prompt "The first number you've picked is #{number1}!"
+  prompt MESSAGES["first_pick"]
 
   loop do
-    prompt "What's the second number? "
+    prompt MESSAGES["second_number"]
     number2 = gets.chomp
 
     if valid_number?(number2)
@@ -65,7 +73,7 @@ loop do # main loop
       prompt("No, try again")
     end
   end
-  prompt "And second you've picked is " + number2 + "!"
+  prompt MESSAGES["second_pick"]
 
   operator_prompt = <<-MSG
 Which operation would you like to perform?
