@@ -40,7 +40,7 @@ end
 
 prompt "Hi, #{name}!"
 
-loop do #main loop
+loop do # main loop
   number1 = ""
   number2 = ""
   loop do
@@ -52,7 +52,6 @@ loop do #main loop
     else
       prompt("Hm, invalid; try again?")
     end
-
   end
   prompt "The first number you've picked is #{number1}!"
 
@@ -60,7 +59,7 @@ loop do #main loop
     prompt "What's the second number? "
     number2 = gets.chomp
 
-    if valid_number?(number2) 
+    if valid_number?(number2)
       break
     else
       prompt("No, try again")
@@ -82,7 +81,7 @@ Which operation would you like to perform?
   loop do
     if %w(1 2 3 4).include?(operator)
       break
-    else 
+    else
       puts "Please choose 1, 2, 3, or 4"
       operator = gets.chomp
     end
@@ -99,9 +98,7 @@ Which operation would you like to perform?
               number1.to_i * number2.to_i
             when "4"
               number1.to_f / number2.to_f
-  end
-
-
+            end
 
   prompt "The result is #{result}."
 
@@ -110,4 +107,4 @@ Which operation would you like to perform?
   break unless answer.downcase.start_with?("y")
 end
 
-prompt ("Thanks for calculating!")
+prompt "Thanks for calculating!"
