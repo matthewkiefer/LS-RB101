@@ -33,29 +33,53 @@ def win?(first, second)
   BEATS_HASH[first].include?(second)
 end
 
-def calculate_results(first, second)
-  if first == second
+def calculate_results(player, computer)
+  if player == computer
     "tie"
-  elsif win?(first, second)
-    puts "testing, first = #{first}"
-    first
+  elsif win?(player, computer)
+    "player"
   else
-    puts "testing, second = #{second}"
-    second
+    "computer"
   end
 end
 
 
-def display_results(winner)
+def display_results(winner, passed_score)
   if winner == "tie"
     prompt "Tie!"
   else
     prompt "Winner is #{winner}!"
   end
+  prompt "The score is player #{passed_score["player"]} to computer #{passed_score["computer"]}"
+end
+
+def winner_announce_and_reset(passed_score)
+  if passed_score["player"] == 5
+    prompt "Player is the first to five points: grand winner!"
+    score_reset(passed_score)
+  end
+  if passed_score["computer"] == 5
+    prompt "The computer is the first to five points: grand winner!"
+    score_reset(passed_score)
+  end
+end
+
+def score_reset(passed_score)
+  passed_score["computer"] = 0
+  passed_score["player"] = 0
+  passed_score["tie"] = 0
+  prompt "Resetting scores to zero."
 end
 
 def prompt(message)
   puts "=> #{message}"
+end
+
+def abbrev_to_full(choice)
+  if VALID_CHOICES.has_value?(choice)
+    choice = VALID_CHOICES.key(choice)
+  else choice
+  end
 end
 
 def formatted_choices(choices_hash)
@@ -69,10 +93,7 @@ loop do
   loop do
     prompt("Choose one: #{formatted_choices(VALID_CHOICES)}")
     choice = gets.chomp
-    
-    if VALID_CHOICES.has_value?(choice)
-      choice = VALID_CHOICES.key(choice)
-    end
+    choice = abbrev_to_full(choice)
 
     if VALID_CHOICES.keys.include?(choice) 
       break
@@ -85,8 +106,11 @@ loop do
   prompt "You chose #{choice} and the computer chose #{computer_choice}"
 
   winner = calculate_results(choice, computer_choice)
-  display_results(score)
+
   increment_score(winner, score)
+  display_results(winner, score)
+
+  winner_announce_and_reset(score)
 
   prompt "Play again?"
   answer = gets.chomp
