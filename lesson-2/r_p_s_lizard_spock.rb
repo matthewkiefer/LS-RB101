@@ -43,14 +43,13 @@ def calculate_results(player, computer)
   end
 end
 
-
 def display_results(winner, passed_score)
   if winner == "tie"
     prompt "Tie!"
   else
     prompt "Winner is #{winner}!"
   end
-  prompt "The score is player #{passed_score["player"]} to computer #{passed_score["computer"]}"
+  prompt "The score is player #{passed_score['player']} to computer #{passed_score['computer']}"
 end
 
 def winner_announce_and_reset(passed_score)
@@ -76,17 +75,16 @@ def prompt(message)
 end
 
 def abbrev_to_full(choice)
-  if VALID_CHOICES.has_value?(choice)
-    choice = VALID_CHOICES.key(choice)
+  if VALID_CHOICES.value?(choice)
+    VALID_CHOICES.key(choice)
   else choice
   end
 end
 
 def formatted_choices(choices_hash)
   flattened = choices_hash.inspect.gsub("=>", " or ")
-  flattened.delete "{" "}"
+  flattened.delete "{}"
 end
-
 
 loop do
   choice = ""
@@ -95,7 +93,7 @@ loop do
     choice = gets.chomp
     choice = abbrev_to_full(choice)
 
-    if VALID_CHOICES.keys.include?(choice) 
+    if VALID_CHOICES.keys.include?(choice)
       break
     else
       prompt("Not a valid choice, sorry.")
