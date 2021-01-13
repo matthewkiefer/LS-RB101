@@ -14,7 +14,10 @@ def count_occurrences(array)
       occurances[occurance] = 0
     end
   end
-  puts occurances
+  
+  occurances.each do |type, count|
+    puts "#{type} => #{count}"
+  end
 end
 
 count_occurrences(vehicles)
