@@ -2,19 +2,19 @@
 
 vehicles = [
   'car', 'car', 'truck', 'car', 'SUV', 'truck',
-  'motorcycle', 'motorcycle', 'car', 'truck'
+  'motorcycle', 'motorcycle', 'car', 'truck', "suv"
 ]
 
 def count_occurrences(array)
   occurances = {}
   array.each do |occurance|
-    if occurances.key?(occurance)
-      occurances[occurance] += 1
+    if occurances.key?(occurance.downcase)
+      occurances[occurance.downcase] += 1
     else
-      occurances[occurance] = 0
+      occurances[occurance.downcase] = 1
     end
   end
-  
+
   occurances.each do |type, count|
     puts "#{type} => #{count}"
   end
