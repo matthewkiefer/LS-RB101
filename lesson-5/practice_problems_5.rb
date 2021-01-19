@@ -75,6 +75,51 @@ total_age = munsters.each do |value, key|
 end
 puts age
 
-
   # munster.reduce do |age, munster["age"]|
   #   munster["age"]
+
+# problem 6
+munsters.each do |name, info|
+  puts "#{name} is a #{info["age"]}-year-old #{info["gender"]}"
+end
+
+# problem 7
+# arr = [4, [3, 8]]
+# note to self: read the problem carefully!
+
+# problem 8
+hsh = {first: ['the', 'quick'], second: ['brown', 'fox'], third: ['jumped'], fourth: ['over', 'the', 'lazy', 'dog']}
+
+vowels = ""
+hsh.each do |key, words|
+  words.each do |word|
+    word.chars.each do |char|
+      if char =~ /[aeiou]/
+        vowels << char
+      end
+    end
+  end
+end
+
+puts vowels
+
+# problem 9
+arr = [['b', 'c', 'a'], [2, 1, 3], ['blue', 'black', 'green']]
+new_arr = arr.clone
+new_arr.each do |sub_arr|
+  # if sub_arr[0] == "b" ||
+  #   sub_arr[0] == 2
+        sub_arr.sort! { |a, b| b <=> a }
+  # else 
+
+
+  # case sub_arr[0]
+  # when sub_arr[0].to_i > 0
+  #   puts "case a"
+  #   sub_arr.sort! { |a, b| b <=> a }
+  # when "b"
+  #   puts "case b"
+  # end
+end
+p new_arr
+
