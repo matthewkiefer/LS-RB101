@@ -123,3 +123,129 @@ new_arr.each do |sub_arr|
 end
 p new_arr
 
+# problem 10
+original_arr = [{a: 1}, {b: 2, c: 3}, {d: 4, e: 5, f: 6}]
+new_arr = original_arr.map do |hsh|
+  hash = hsh.dup
+  hash.each do |k, v| 
+    v += 1 
+    hash[k] = v
+  end
+
+end
+p original_arr
+p new_arr
+
+# problem 11
+arr = [[2], [3, 5, 7], [9], [11, 13, 15]]
+
+arr2 = arr.map do |sub_arr|
+  sub_arr.select do |digit|
+    digit % 3 == 0
+  end
+end
+
+p arr2
+
+# problem 12
+arr = [[:a, 1], ['b', 'two'], ['sea', {c: 3}], [{a: 1, b: 2, c: 3, d: 4}, 'D']]
+# expected return value: {:a=>1, "b"=>"two", "sea"=>{:c=>3}, {:a=>1, :b=>2, :c=>3, :d=>4}=>"D"}
+
+def hash_it(arr)
+  hsh = {}
+  arr.each do |element|
+    hsh[element[0]] = element[1]
+  end
+  hsh
+end
+
+p hash_it(arr)
+
+# problem 13
+arr = [[1, 6, 7], [1, 4, 9], [1, 8, 3]]
+
+ p ( arr.sort do |a, b|
+   a.select(&:odd?) <=> b.select(&:odd?)
+ end )
+
+# arr.sort_by do |element|
+  
+# problem 14
+# input: hsh
+# output: [return] array with veggie sizes up'cased and fruit colors capitalized
+
+hsh = {
+  'grape' => {type: 'fruit', colors: ['red', 'green'], size: 'small'},
+  'carrot' => {type: 'vegetable', colors: ['orange'], size: 'medium'},
+  'apple' => {type: 'fruit', colors: ['red', 'green'], size: 'medium'},
+  'apricot' => {type: 'fruit', colors: ['orange'], size: 'medium'},
+  'marrow' => {type: 'vegetable', colors: ['green'], size: 'large'},
+}
+
+# two levels of .each, << the info in after transforming it with .capitalize or .upcase methods
+def produce_info(hsh)
+  info_arr = []
+
+  hsh.each_value do |description|
+
+    if description[:type] == "fruit"
+      color_arr = description[:colors].map { |color| color.capitalize }
+      info_arr << color_arr
+    end
+
+    if description[:type] == "vegetable"
+      info_arr << description[:size].upcase
+    end
+
+    # description.each do |characteristic, adjective|
+    #   if adjective == "fruit"
+    #     puts "found a fruit"
+    #   end
+    #   if characteristic == :colors
+    #     color_arr = adjective.map { |color| color.capitalize }
+
+    #     info_arr << color_arr
+    #   end
+    # end
+  end 
+
+  info_arr
+end
+
+p produce_info(hsh)
+
+# problem 15
+arr = [{a: [1, 2, 3]}, {b: [2, 4, 6], c: [3, 6], d: [4]}, {e: [8], f: [6, 10]}]
+
+# Selecting from among the first-level elements (hashes), so .select to start
+# For second level, need to return true if all the values are even
+# - .values will return an array; check that all array elements are even
+# - - Some arrays are nested
+
+def select_evens(arr)
+  return arr.select do |hsh|
+    hsh.values.flatten.all? { |v| v.even? }
+  end
+end
+
+p select_evens(arr)
+
+# problem 16
+# looked for some sort of conversion; found i.to_s(base=10). To get the correct length, generating each digit singly.
+def make_uuid()
+  uuid = ""
+  8.times { uuid << rand(16).to_s(16) }
+  uuid << "-"
+  3.times do
+    4.times { uuid << rand(16).to_s(16) }
+    uuid << "-"
+  end
+  12.times { uuid << rand(16).to_s(16) }
+  
+  uuid
+end
+
+
+p make_uuid
+
+

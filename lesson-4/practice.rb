@@ -91,4 +91,127 @@ puts flinthash
 =end
 
 ages = { "Herman" => 32, "Lily" => 30, "Grandpa" => 5843, "Eddie" => 10, "Marilyn" => 22, "Spot" => 237 }
-puts ages.values.sum
+#puts ages.values.sum
+#ages.delete_if { |munster, age| age > 100 }
+
+puts ages.values.min
+
+# Practice Problem 5
+
+=begin
+Problem: Return the index of the *First* name that starts with the string "Be"
+..Algorithm: Look at each string, compare first two letters with .slice
+
+flintstones = %w(Fred Barney Wilma Betty BamBam Pebbles)
+index_sought = nil
+count = 0
+
+loop do
+  if flintstones[count].slice(2) == "Be"
+    index_sought = count
+    break
+  elsif count == flintstones.size - 1
+    break
+  end
+  count += 1
+end
+
+puts index_sought
+
+=end
+
+# 6
+
+flintstones = %w(Fred Barney Wilma Betty BamBam Pebbles)
+
+flintstones = flintstones.map { |fli| fli = fli[0, 3] }
+
+p flintstones
+
+statement = "The Flintstones Rock"
+no_spaces = statement.gsub(" ", "")
+letter_hash = no_spaces.chars.each_with_object({}) do |char, hash|
+  if hash.key?(char)
+    hash[char] += 1
+  else 
+    hash[char] = 1
+  end
+end
+
+
+p letter_hash
+
+arr = [1, 2, 3, 4]
+counter = 1
+
+arr.each do |i|
+  puts "this is time through number #{counter}"
+  p "this is i and below is the first shift: #{i}"
+  p arr.shift 
+  p "this is the new i and below is p arr: #{i}"
+  p arr
+  counter += 1
+end
+
+# Titleize
+words = "the flintstones rock"
+
+def titleize(string)
+  arr = string.split
+  titleized = ""
+  arr.each do |word|
+    word[0] = word[0].upcase
+    titleized << word + " "
+  end
+  titleized.chomp(" ")
+end
+
+p titleize(words)
+
+#
+
+munsters = {
+  "Herman" => { "age" => 18, "gender" => "male" },
+  "Lily" => { "age" => 30, "gender" => "female" },
+  "Grandpa" => { "age" => 402, "gender" => "male" },
+  "Eddie" => { "age" => 10, "gender" => "male" },
+  "Marilyn" => { "age" => 23, "gender" => "female"}
+}
+
+# def munsters_upgrade(family_hash) 
+#   family_hash.each do |who, munster|
+#      puts munster["age"]
+#     if munster["age"] < 18
+#       munster["age_group"] = "kid" 
+#     elsif munster["age"] < 65
+#       munster["age_group"] = "adult" 
+#     else
+#       munster["age_group"] = "senior"
+#     end
+#   end
+# end
+
+# def munsters_upgrade(family_hash)
+#   family_hash.each do |who, munster|
+#     case munster["age"]
+#     when 0..17
+#       munster["age_group"] = "kid" 
+#     when 18..65
+#       munster["age_group"] = "adult" 
+#     else
+#       munster["age_group"] = "senior"
+#     end
+#   end
+# end
+
+# p munsters_upgrade(munsters)
+
+
+=begin
+in: 
+- array
+- even and odd
+- integers
+out: two arrays, `odd_numbers` and `even_numbers`
+facts:
+

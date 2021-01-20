@@ -21,6 +21,7 @@ score = {
 }
 winner = ""
 
+# methods
 def increment_score(victor, current_score)
   current_score[victor] += 1
 end
@@ -86,6 +87,7 @@ def formatted_choices(choices_hash)
   flattened.delete "{}"
 end
 
+# main loop
 loop do
   choice = ""
   loop do
@@ -116,3 +118,4 @@ loop do
 end
 
 prompt "Good game"
+
