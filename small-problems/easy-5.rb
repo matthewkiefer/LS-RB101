@@ -147,4 +147,60 @@ def cleanup(str)
   str.squeeze!(" ")
 end
 
-p cleanup("---what's my +*& line?") == ' what s my line '
+# p cleanup("---what's my +*& line?") == ' what s my line '
+
+# Letter Counter (Parts 1 and 2)
+# Problem:
+  # Input: String with one or more words separated by space
+  # Output: 
+  # Return: Hash of word lengths => number of *unique* occurances (include punctuation, separated by spaces)
+  # Manipulations
+  # Explicit req's
+  # Implicit req's: no zeroes
+# Examples
+# Data Structures: String, hash of int => ints, array (intermediate step)
+# Algorithm
+=begin 
+  input string
+  create: final hash
+  array of words (inc. punctuation, spaces gone)
+  iterate through the array, for each element:
+    if that element.size isn't a key in the hash, add it => 1
+      if it is, increment that value
+  return the hash
+
+# Part 2: only letters
+=end
+
+ALPHABET = (a..z)
+
+def word_sizes(sentence)
+  count_hash = {}
+  
+  words = sentence.split
+  p words
+  words.each do |word|
+    count_hash.has_key?(word.size) ? count_hash[word.size] += 1 : count_hash[word.size] = 1
+  end 
+
+  count_hash
+end
+
+def count_letters(word)
+  word.reduce(0) do |size, w| 
+    if ALPHABET.include?(w)
+      size + 1
+    else 
+      size
+    end
+  end
+end
+
+
+p word_sizes('Four score and seven.') 
+p word_sizes('Four score and seven.') == { 3 => 1, 4 => 1, 5 => 1, 6 => 1 }
+p word_sizes('Hey diddle diddle, the cat and the fiddle!') == { 3 => 5, 6 => 1, 7 => 2 }
+p word_sizes("What's up doc?") == { 6 => 1, 2 => 1, 4 => 1 }
+p word_sizes('') == {}
+
+p count_letters("test")
