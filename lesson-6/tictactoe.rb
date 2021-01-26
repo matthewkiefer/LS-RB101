@@ -8,6 +8,7 @@ INITIAL_MARKER = " "
 PLAYER_MARKER = "X"
 COMPUTER_MARKER = "O"
 VICTORIES_TO_WIN = 3
+WHO_STARTS = "choose"
 
 def prompt(msg)
   puts "=> #{msg}"
@@ -78,6 +79,8 @@ def computer_places_piece!(brd)
     square = find_win_opportunity(brd)
   elsif threatened_by(brd) # return a square or nil
     square = threatened_by(brd)
+  elsif brd[5] == INITIAL_MARKER
+      square = 5
   else
     square = empty_squares(brd).sample
   end
@@ -143,18 +146,43 @@ def reset_score(brd)
   initialize_board
 end
 
+def select_first_player
+  first_player = "player"
+  loop do
+    prompt ("Who starts, player or computer? (p/c)")
+    selection = gets.chomp
+    if selection == "p"
+      break
+    elsif selection == "c"
+      first_player = "computer"
+      break
+    else
+      prompt "Invalid choice"
+    end
+  end
+  first_player
+end
+
+def place_piece!(board, current_player)
+  current_player == "computer" ?  computer_places_piece!(board) : player_places_piece!(board)
+end
+
+def alternate_player(current_player)
+  current_player == "computer" ? "player" : "computer"
+end
+
 ####### Main Logic Here #######
 
 board = initialize_board
 loop do
-
-  loop do
+  # refactor this
+  # Also, should this choice last five games? Currently just one.
+  WHO_STARTS == "choose" ? current_player = select_first_player : current_player = WHO_STARTS
+  
+  loop do    
     display_board(board)
-
-    player_places_piece!(board)
-    break if someone_won?(board) || board_full?(board)
-
-    computer_places_piece!(board)
+    place_piece!(board, current_player)
+    current_player = alternate_player(current_player)
     break if someone_won?(board) || board_full?(board)
   end
 
