@@ -156,8 +156,8 @@ end
 board = initialize_board
 loop do
   WHO_STARTS == "choose" ? current_player = select_first_player : current_player = WHO_STARTS
-  
-  loop do    
+
+  loop do
     display_board(board)
     place_piece!(board, current_player)
     current_player = alternate_player(current_player)
@@ -170,14 +170,15 @@ loop do
     increment_score(board)
     prompt "#{detect_winner(board)} won!"
     # binding.pry
-    prompt "The score is now player: #{board[:player_score]}, computer #{board[:computer_score]}"
+    prompt "The score is now player: #{board[:player_score]}," \
+           " computer #{board[:computer_score]}"
   else
     prompt "It's a tie!"
   end
 
   if grand_winner?(board)
-    prompt  "#{detect_winner(board)} reached the score of #{VICTORIES_TO_WIN}" +
-            " and is the GRAND WINNER!"
+    prompt "#{detect_winner(board)} reached the score of #{VICTORIES_TO_WIN}" \
+           " and is the GRAND WINNER!"
     reset_score(board)
   end
 
@@ -188,36 +189,3 @@ loop do
 end
 
 prompt "Thanks for playing. Bye now!"
-
-# 
-# 2. Keep score
-# Playing to five. No instance or global variables.
-# So, must pass the score each time.
-
-# 1. Display the initial empty 3x3 board.
-#   2.5 Display score up top
-#   Can I add score to board?
-# 2. Ask the user to mark a square.
-# 3. Computer marks a square.
-# 4. Display the updated board state.
-# 5. If winner, display winner and. 
-#   If 5 times, grand winner
-# 6. If board is full, display tie.
-# 7. If neither winner nor board is full, go to #2
-# 8. Play again?
-# 9. If yes, go to #1
-# 10. Good bye!
-
-# Initialize: pass the board to it (with a defualt param); check score def
-#   -grand_winner?
-
-#   on init, don't set score but don't reset
-#   ----way to have the default value be 0 of a new hash key
-#   Init sets the default value
-#   win condition adds one
-#   in someone_won? 
-
-# added default values, but still need to pass the board back at the start to keep the hash from 
-# being overwritten
-
-# To improve on score keeping: announce goal at start
