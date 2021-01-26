@@ -75,10 +75,11 @@ end
 def computer_places_piece!(brd)
   # binding.pry
   square = nil
-  if find_win_opportunity(brd)
-    square = find_win_opportunity(brd)
-  elsif threatened_by(brd) # return a square or nil
-    square = threatened_by(brd)
+
+  if poised_to_win(brd, COMPUTER_MARKER)
+    square = poised_to_win(brd, COMPUTER_MARKER)
+  elsif poised_to_win(brd, PLAYER_MARKER) # return a square or nil
+    square = poised_to_win(brd, PLAYER_MARKER)
   elsif brd[5] == INITIAL_MARKER
       square = 5
   else
@@ -87,29 +88,15 @@ def computer_places_piece!(brd)
   brd[square] = COMPUTER_MARKER
 end
 
-def threatened_by(brd)
+def poised_to_win(brd, which_marker)
   WINNING_LINES.each_with_index do |line, idx|
-  # WINNING_LINES.each do |line|
-    if brd.values_at(line[0], line[1], line[2]).count(PLAYER_MARKER) == 2 &&
-      brd.values_at(line[0], line[1], line[2]).count(COMPUTER_MARKER) == 0
-      #return whichever is still open
-      # binding.pry
-      return WINNING_LINES[idx][brd.values_at(line[0], line[1], line[2]).index(INITIAL_MARKER)]
+    player_in_a_row = brd.values_at(*line).count(which_marker)
+    empty_space = brd.values_at(*line).index(INITIAL_MARKER)
+    if player_in_a_row == 2 && empty_space
+      return WINNING_LINES[idx][empty_space]
     end
   end
-  nil
-end
 
-def find_win_opportunity(brd)
-  WINNING_LINES.each_with_index do |line, idx|
-  # WINNING_LINES.each do |line|
-    if brd.values_at(line[0], line[1], line[2]).count(COMPUTER_MARKER) == 2 &&
-      brd.values_at(line[0], line[1], line[2]).count(PLAYER_MARKER) == 0
-      #return whichever is still open
-      # binding.pry
-      return WINNING_LINES[idx][brd.values_at(line[0], line[1], line[2]).index(INITIAL_MARKER)]
-    end
-  end
   nil
 end
 
@@ -148,17 +135,10 @@ end
 
 def select_first_player
   first_player = "player"
-  loop do
-    prompt ("Who starts, player or computer? (p/c)")
-    selection = gets.chomp
-    if selection == "p"
-      break
-    elsif selection == "c"
-      first_player = "computer"
-      break
-    else
-      prompt "Invalid choice"
-    end
+  prompt ("Who starts, player or computer? (p/c, default is player)")
+  selection = gets.chomp
+  if selection.downcase == "c"
+    first_player = "computer"
   end
   first_player
 end
@@ -175,8 +155,6 @@ end
 
 board = initialize_board
 loop do
-  # refactor this
-  # Also, should this choice last five games? Currently just one.
   WHO_STARTS == "choose" ? current_player = select_first_player : current_player = WHO_STARTS
   
   loop do    
