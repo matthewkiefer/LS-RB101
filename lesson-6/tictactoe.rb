@@ -43,13 +43,6 @@ def wipe_board(brd)
   (1..9).each { |num| brd[num] = INITIAL_MARKER }
 end
 
-
-# def reset_score_if_victor(brd)
-#   if (brd.key?(:player_score) || brd.key(:computer_score)) &&
-#     brd[:player_score] < VICTORES_TO_WIN && brd[:computer_score] < VICTORES_TO_WIN
-#   end
-# end
-
 def joinor(arr, punc = ",", separator = "or")
   case arr.size
   when 1 
@@ -79,9 +72,28 @@ def player_places_piece!(brd)
 end
 
 def computer_places_piece!(brd)
-  square = empty_squares(brd).sample
+  # binding.pry
+  if threatened_by(brd) # return a square or nil
+    square = threatened_by(brd)
+  else
+    square = empty_squares(brd).sample
+  end
   brd[square] = COMPUTER_MARKER
 end
+
+def threatened_by(brd)
+  WINNING_LINES.each_with_index do |line, idx|
+  # WINNING_LINES.each do |line|
+    if brd.values_at(line[0], line[1], line[2]).count(PLAYER_MARKER) == 2 &&
+      brd.values_at(line[0], line[1], line[2]).count(COMPUTER_MARKER) == 0
+      #return whichever is still open
+      # binding.pry
+      return WINNING_LINES[idx][brd.values_at(line[0], line[1], line[2]).index(INITIAL_MARKER)]
+    end
+  end
+  nil
+end
+
 
 def board_full?(brd)
   empty_squares(brd).empty?
