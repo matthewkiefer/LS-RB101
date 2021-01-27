@@ -10,40 +10,30 @@ COMPUTER_MARKER = "O"
 VICTORIES_TO_WIN = 3
 WHO_STARTS = "choose"
 
+# rubocop:disable Metrics/AbcSize
+def display_board(brd, system_command = "clear")
+  system(system_command)
+  puts ""
+  puts "               |     |"
+  puts "            #{brd[1]}  |  #{brd[2]}  |  #{brd[3]}"
+  puts "               |     |"
+  puts "          -----+-----+-----"
+  puts "               |     |"
+  puts "            #{brd[4]}  |  #{brd[5]}  |  #{brd[6]}"
+  puts "               |     |"
+  puts "          -----+-----+-----"
+  puts "               |     |"
+  puts "            #{brd[7]}  |  #{brd[8]}  |  #{brd[9]}"
+  puts "               |     |"
+  puts ""
+end
+# rubocop:enable Metrics/AbcSize
+
 def prompt(msg)
   puts "=> #{msg}"
 end
 
-# rubocop:disable Metrics/AbcSize
-def display_board(brd)
-  system "clear"
-  puts "You're #{PLAYER_MARKER}. Computer is #{COMPUTER_MARKER}."
-  puts ""
-  puts "     |     |"
-  puts "  #{brd[1]}  |  #{brd[2]}  |  #{brd[3]}"
-  puts "     |     |"
-  puts "-----+-----+-----"
-  puts "     |     |"
-  puts "  #{brd[4]}  |  #{brd[5]}  |  #{brd[6]}"
-  puts "     |     |"
-  puts "-----+-----+-----"
-  puts "     |     |"
-  puts "  #{brd[7]}  |  #{brd[8]}  |  #{brd[9]}"
-  puts "     |     |"
-end
-# rubocop:enable Metrics/AbcSize
-
-def initialize_board
-  new_board = Hash.new(0)
-  (1..9).each { |num| new_board[num] = INITIAL_MARKER }
-  new_board
-end
-
-def wipe_board(brd)
-  (1..9).each { |num| brd[num] = INITIAL_MARKER }
-end
-
-def joinor(arr, punc = ",", separator = "or")
+def joinor(arr, punc = ", ", separator = "or")
   case arr.size
   when 1
     arr[0]
@@ -55,14 +45,44 @@ def joinor(arr, punc = ",", separator = "or")
   end
 end
 
+def display_greeting_and_rules
+  system("clear")
+  prompt "Welcome to Tic-Tac-Toe!"
+  prompt "You're #{PLAYER_MARKER}. Computer is #{COMPUTER_MARKER}."
+  prompt "The board position choices are accessed by numbers as shown:"
+
+  board_with_numbers = {}
+  (1..9).each { |num| board_with_numbers[num] = num }
+  display_board(board_with_numbers, "")
+end
+
+def initialize_board
+  new_board = Hash.new(0)
+  (1..9).each { |num| new_board[num] = INITIAL_MARKER }
+  new_board
+end
+
+def wipe_board(brd)
+  (1..9).each { |num| brd[num] = INITIAL_MARKER }
+end
+
 def empty_squares(brd)
   brd.keys.select { |num| brd[num] == INITIAL_MARKER }
+end
+
+def announce_open_squares(brd)
+  if empty_squares(brd).size == 1
+    prompt "Square #{empty_squares(brd)[0]} is open."
+  else
+    prompt "Squares #{joinor(empty_squares(brd), ', ', 'and')} are open."
+  end
 end
 
 def player_places_piece!(brd)
   square = ""
   loop do
-    prompt "Choose a square (#{joinor(empty_squares(brd))}):"
+    announce_open_squares(brd)
+    print "=> Choose your move: "
     square = gets.chomp.to_i
     break if empty_squares(brd).include?(square)
     prompt "Sorry, not a valid choice."
@@ -72,9 +92,6 @@ def player_places_piece!(brd)
 end
 
 def computer_places_piece!(brd)
-  # binding.pry
-  # square = nil
-
   square = if poised_to_win(brd, COMPUTER_MARKER)
              poised_to_win(brd, COMPUTER_MARKER)
            elsif poised_to_win(brd, PLAYER_MARKER) # return a square or nil
@@ -135,7 +152,7 @@ end
 
 def select_first_player
   first_player = "player"
-  prompt "Who starts, player or computer? (p/c, default is player)"
+  prompt "Who starts, player (p) or computer (c)? Player is default."
   selection = gets.chomp
   if selection.downcase == "c"
     first_player = "computer"
@@ -157,6 +174,7 @@ end
 
 ####### Main Logic Here #######
 
+display_greeting_and_rules
 board = initialize_board
 loop do
   current_player = if WHO_STARTS == "choose"
@@ -176,9 +194,8 @@ loop do
   if someone_won?(board)
     increment_score(board)
     prompt "#{detect_winner(board)} won!"
-    # binding.pry
     prompt "The score is now player: #{board[:player_score]}," \
-           " computer #{board[:computer_score]}"
+           " computer: #{board[:computer_score]}"
   else
     prompt "It's a tie!"
   end
@@ -189,9 +206,9 @@ loop do
     reset_score(board)
   end
 
-  prompt "Play again? (y or n)"
+  prompt "Play again? Yes (y) or no (n), default yes."
   answer = gets.chomp
-  break unless answer.downcase.start_with?("y")
+  break if answer.downcase.start_with?("n")
   wipe_board(board)
 end
 
