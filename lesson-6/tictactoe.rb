@@ -33,10 +33,9 @@ def display_board(brd)
 end
 # rubocop:enable Metrics/AbcSize
 
-def initialize_board(brd = Hash.new(0))
-  new_board = brd
+def initialize_board
+  new_board = Hash.new(0)
   (1..9).each { |num| new_board[num] = INITIAL_MARKER }
-  # reset_score_if_victor(new_board)
   new_board
 end
 
@@ -46,7 +45,7 @@ end
 
 def joinor(arr, punc = ",", separator = "or")
   case arr.size
-  when 1 
+  when 1
     arr[0]
   when 2
     "#{arr[0]} #{separator} #{arr[1]}"
@@ -74,17 +73,17 @@ end
 
 def computer_places_piece!(brd)
   # binding.pry
-  square = nil
+  # square = nil
 
-  if poised_to_win(brd, COMPUTER_MARKER)
-    square = poised_to_win(brd, COMPUTER_MARKER)
-  elsif poised_to_win(brd, PLAYER_MARKER) # return a square or nil
-    square = poised_to_win(brd, PLAYER_MARKER)
-  elsif brd[5] == INITIAL_MARKER
-      square = 5
-  else
-    square = empty_squares(brd).sample
-  end
+  square = if poised_to_win(brd, COMPUTER_MARKER)
+             poised_to_win(brd, COMPUTER_MARKER)
+           elsif poised_to_win(brd, PLAYER_MARKER) # return a square or nil
+             poised_to_win(brd, PLAYER_MARKER)
+           elsif brd[5] == INITIAL_MARKER
+             5
+           else
+             empty_squares(brd).sample
+           end
   brd[square] = COMPUTER_MARKER
 end
 
@@ -110,7 +109,7 @@ end
 
 def grand_winner?(brd)
   brd[:player_score] == VICTORIES_TO_WIN ||
-  brd[:computer_score] == VICTORIES_TO_WIN
+    brd[:computer_score] == VICTORIES_TO_WIN
 end
 
 def detect_winner(brd)
@@ -130,12 +129,13 @@ def increment_score(brd)
 end
 
 def reset_score(brd)
-  initialize_board
+  brd[:player_score] = 0
+  brd[:computer_score] = 0
 end
 
 def select_first_player
   first_player = "player"
-  prompt ("Who starts, player or computer? (p/c, default is player)")
+  prompt "Who starts, player or computer? (p/c, default is player)"
   selection = gets.chomp
   if selection.downcase == "c"
     first_player = "computer"
@@ -144,7 +144,11 @@ def select_first_player
 end
 
 def place_piece!(board, current_player)
-  current_player == "computer" ?  computer_places_piece!(board) : player_places_piece!(board)
+  if current_player == "computer"
+    computer_places_piece!(board)
+  else
+    player_places_piece!(board)
+  end
 end
 
 def alternate_player(current_player)
@@ -155,8 +159,11 @@ end
 
 board = initialize_board
 loop do
-  WHO_STARTS == "choose" ? current_player = select_first_player : current_player = WHO_STARTS
-
+  current_player = if WHO_STARTS == "choose"
+                     select_first_player
+                   else
+                     WHO_STARTS
+                   end
   loop do
     display_board(board)
     place_piece!(board, current_player)
