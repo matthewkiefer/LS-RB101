@@ -36,4 +36,171 @@ def madlib
   puts "The #{noun} wants to #{verb} #{adverb} but runs into the same #{adjective} problem."
 end
 
-madlib
+# madlib
+
+# Leading Substrings
+
+
+# normal: look at first element, save it, move it to array
+# look at second element, add to same save, move that to array
+
+# def leading_substrings(str)
+#   substring_list = []
+#   growing_element = ""
+
+#   str.chars.each do |char|
+#     # binding.pry
+#     growing_element = growing_element + char
+#     substring_list.push(growing_element)
+#   end
+
+#   substring_list
+# end
+
+# p leading_substrings("qretuv")
+
+# Another recursion attempt
+# Call on one smaller, then add to string
+
+def leading_substrings_recursive(str, arr = [])
+  if str.size > 1
+    leading_substrings_recursive(str[0..str.size-2], arr)
+  end
+  arr << str
+end
+
+# All Substrings
+
+def substrings(sub_str, sub_arr = [])
+  if sub_str.size > 0
+    leading_substrings_recursive(sub_str, sub_arr)
+    substrings(sub_str[1..sub_str.size-1], sub_arr)
+  end
+  sub_arr
+end
+
+# Palindromic Substrings
+# case-sensitive, do include duplicates
+# write palindrome method, then call on list
+    # item.reverse == item ? add to the output list
+
+def palindrome?(word)
+  word.reverse == word
+end
+
+def palindromes(string)
+  substrings(string).select { |word| palindrome?(word) && word.length > 1 }
+end
+
+# p palindromes('madam') 
+# p palindromes('heLlo-madam-did-madam-goodbye')
+
+# fizzbuzz
+# Input: starting int [assumed], ending int
+# Output: print numbers between ints (inclusive per example)
+  # If number divisible by 3, print Fizz
+  # If num divisible by 5 print Buzz
+  # If number divisible by both, print FizzBuzz
+
+# Algo: iterate start_int to finish_int
+  # Compare each number to conditionals:
+    # Watch for "FizzBuzz" condition; don't call others
+  # Print either number or text
+
+def fizzbuzz(start_int, finish_int)
+  i = start_int
+  output_array = []
+
+  while i <= finish_int
+    if i % 3 == 0 && i % 5 == 0
+      output_array << "FizzBuzz"
+    elsif i % 3 == 0
+      output_array << "Fizz"
+    elsif i % 5 == 0
+      output_array << "Buzz"
+    else
+      output_array << i
+    end
+
+    i += 1
+  end
+  output_array.join(", ")
+end
+
+# p fizzbuzz(1, 15)
+
+# Double Char (Part 1)
+# Step 1: chars, make new array
+# 2: shovel to new array, multiplied the char * 2
+# Then join new array, return it
+
+def repeater(string)
+  doubled = ""
+  single_chars = string.chars
+  single_chars.each do |char|
+    doubled_char = char * 2
+    doubled << doubled_char
+  end
+  doubled
+end
+
+# p repeater("")
+
+# Double Char (Part 2)
+# Every consonant is doubled (up and downcase).
+
+def double_consonants(string)
+  output = ""
+  single_chars = string.chars
+  single_chars.each do |char|
+    if char.match(/[[a-z]&&[^aeiou]]/i)
+      output << char * 2
+    else
+      output << char 
+    end
+  end
+  output
+end
+
+# p double_consonants("July 4th")
+
+# Reverse the Digits in a Number
+# Problem
+  # Reverse digits. Tricky: easy to go to string, but how to go back? 
+  # Add digits with 10 to the ?th position 
+# Examples
+  # No leading zeros
+# Data structures
+  # String in, convert to chars array, output a number
+# Algo
+  # flip string
+  # Convert to array
+  # delete starting zeroes; want the index to be 0 when we start converting
+  # with index, add number * 10 to the i'th power to the new number
+
+def reversed_number(int)
+  # output = 0
+  # reversed_array = int.to_s.chars.reverse
+  # p reversed_array
+  int.to_s.reverse.to_i
+end
+
+# p reversed_number(12345) == 54321
+# p reversed_number(12213) == 31221
+# p reversed_number(456) == 654
+# p reversed_number(12000) == 21 # No leading zeros in return value!
+# p reversed_number(12003) == 30021
+# p reversed_number(1) == 1
+
+# Get the Middle Character
+# Return mid character(s) (1 if odd, 2 if even) from the argument string.
+
+def center_of(str)
+  str.chars.size.odd? ? str.slice(str.chars.length/2, 1) : str.slice(str.chars.length/2-1, 2)
+end
+
+p center_of('I love ruby') == 'e'
+p center_of('Launch School') == ' '
+p center_of('Launch') == 'un'
+p center_of('Launchschool') == 'hs'
+p center_of('x') == 'x'
