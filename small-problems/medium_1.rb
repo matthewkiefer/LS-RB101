@@ -461,6 +461,65 @@ def find_sequence?(words, idx)
 end
 
 
-word_to_digit("One. Two. Three. Four.")
+# word_to_digit("One. Two. Three. Four.")
 
-p word_to_digit('Please call me at five five five one two three four. Thanks.') == 'Please call me at 5 5 5 1 2 3 4. Thanks.'
+# p word_to_digit('Please call me at five five five one two three four. Thanks.') == 'Please call me at 5 5 5 1 2 3 4. Thanks.'
+
+# Fibonacci Numbers (Recursion)
+# Looking for the `nth` Fib number, where `n` is an argument to the method
+
+# Recursion calls itself, has a stop condition, and uses its own return
+
+# def fibonacci(nth_fib)
+  
+#   return 1 if nth_fib == 1 || nth_fib == 2
+  
+#   fibonacci(nth_fib - 1) + fibonacci(nth_fib - 2)
+
+# end
+
+# p fibonacci(12)
+
+# Fibonacci Numbers (Procedural)
+# Non-recursive.
+
+# def my_fib(number)
+  # return 1 if number <= 2
+  # a = 1
+  # b = 1
+  # c = 1
+  # (number-2).times do |i|
+  #   c = a + b
+  #   a, b = b, c 
+  # end
+  # c
+#end
+
+def fibonacci(number)
+  first, last = 1, 1
+
+  3.upto(number) do
+    first, last = last, first + last
+  end
+
+last
+end
+
+# Fibonacci Numbers (Last Digit)
+
+def fibonacci_last(number)
+  first, last = 1, 1
+
+  3.upto(number) do
+    first, last = last, (first + last) % 10 
+  end
+
+last.to_s[-1].to_i
+end
+
+p fibonacci_last(15)        # -> 0  (the 15th Fibonacci number is 610)
+p fibonacci_last(20)        # -> 5 (the 20th Fibonacci number is 6765)
+p fibonacci_last(100)       # -> 5 (the 100th Fibonacci number is 354224848179261915075)
+p fibonacci_last(100_001)   # -> 1 (this is a 20899 digit number)
+p fibonacci_last(1_000_007) # -> 3 (this is a 208989 digit number)
+p fibonacci_last(123456789) # -> 4
