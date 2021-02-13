@@ -1,4 +1,6 @@
 # medium_2.rb
+require "pry"
+require "benchmark"
 
 # Longest Sentence
 def longest_sentence(text_file)
@@ -434,15 +436,121 @@ end
 # p find_fridays(2021)
 # p find_fridays(1754)
 
-p find_fridays(2020)
-p find_thirteenths(2020)
+# p find_fridays(2020)
+# p find_thirteenths(2020)
 
-p find_fridays(2020).count { |friday| find_thirteenths(2020).include?(friday) }
+# p find_fridays(2020).count { |friday| find_thirteenths(2020).include?(friday) }
 
 def friday_13th(year)
   find_fridays(year).count { |friday| find_thirteenths(year).include?(friday) }
 end
 
-p friday_13th(2015) == 3
-p friday_13th(1986) == 1
-p friday_13th(2019) == 2
+# p friday_13th(2015) == 3
+# p friday_13th(1986) == 1
+# p friday_13th(2019) == 2
+
+# Next Featured Number
+
+# A number with certain characteristics (below) needs to be found and returned,
+#   higher than int passed at the argument.
+
+# Criteria: odd, multiple of 7, no duplicate digits
+# Examples: One we are at 10 digits we can't have non-duplicates
+  # There is a hard-coded limit. Find it by going backwards with algo?
+
+# Algo: Count past the int with criteria then return it.
+
+def featured(num)
+  (7..9_876_543_210).step(14) do |i|
+    if i > num && i.digits.uniq == i.digits
+      return i
+    end
+  end
+  "There is no number that works."
+end
+
+# p featured(12) == 21
+# p featured(20) == 21
+# p featured(21) == 35
+# p featured(997) == 1029
+# p featured(1029) == 1043
+# p featured(999_999) == 1_023_547
+# p featured(999_999_987) == 1_023_456_987
+# p featured(9_999_999_999)
+
+# Bubble Sort
+# Implement bubble sort destructively on an array.
+
+# Algo: iterate multiple times (loop?)
+  # Check neighbors: left > right? if so, swap.
+  # Move up one
+  # At end, if no swaps made, done! Otherwise restart
+
+# loop
+# done = yes
+# if any swapping, done = no
+# swap and move on
+# break if done == yes
+
+def bubble_sort!(arr)
+  
+  sorted = true
+  i = 0
+  tail_counter = 0
+
+  time = Benchmark.realtime {
+
+  loop do
+    
+    if arr[i] > arr[i+1]
+      arr[i], arr[i+1] = arr[i+1], arr[i]
+      sorted = false
+    end
+    
+    i = i + 1
+    # binding.pry
+    if i > arr.length - 2
+      break if sorted
+      # i = 0   # Restarting fresh each time
+      tail_counter += 1
+      i = tail_counter
+      sorted = true
+    end
+  end
+  nil
+}
+puts time
+
+
+
+
+
+end
+
+# array = [1, 2, 3]
+# bubble_sort!(array)
+# array
+
+# array = [6, 2, 7, 1, 4, 14124, 4324, 535, 235623, 642, 34, 234, 234, 6346, 123, 52, 554, 234, 55, 123, 325, 14, 3245, 45, 14, 45, 346, 32, ]
+# bubble_sort!(array)
+# array
+
+# array = %w(Sue Pete Alice Tyler Rachel Kim Bonnie)
+# bubble_sort!(array)
+# array
+
+# Sum Square - Square Sum
+
+def sum_square_difference(int)  
+  numbers = (1..int)
+  sum_square = (numbers.sum) ** 2
+  squares_sum = numbers.reduce() { |total, num| num**2 + total }
+
+  sum_square - squares_sum
+end
+
+p sum_square_difference(3) == 22
+   # -> (1 + 2 + 3)**2 - (1**2 + 2**2 + 3**2)
+p sum_square_difference(10) == 2640
+p sum_square_difference(1) == 0
+p sum_square_difference(100) == 25164150
